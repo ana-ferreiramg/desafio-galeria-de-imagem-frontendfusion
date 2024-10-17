@@ -4,28 +4,21 @@ import heartRegular from '../../img/heart-regular.svg';
 import heartSolid from '../../img/heart-solid.svg';
 
 export function Card({ image }) {
-  const [like, setLike] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
-    const images = JSON.parse(localStorage.getItem('galeryPicsum')) || [];
-    const currentImage = images.find(item => item.id === image.id);
+    const storedData = JSON.parse(localStorage.getItem('galeryPicsum')) || [];
+    const currentImage = storedData.find(item => item.id === image.id);
 
-    if (currentImage) {
-      setLike(currentImage.favorite);
-    }
+    setIsFavorite(currentImage?.favorite || false);
   }, [image.id]);
 
   const toggleFavorite = () => {
-    setLike(!like);
+    setIsFavorite(!isFavorite);
 
     const updateLocalStorage = () => {
-      const images = JSON.parse(localStorage.getItem('galeryPicsum'));
-      const updatedImages = images.map(item => {
-        if (item.id === image.id) {
-          return { ...item, favorite: !item.favorite };
-        }
-        return item;
-      });
+      const storedImages = JSON.parse(localStorage.getItem('galeryPicsum'));
+      const updatedImages = storedImages.map(item => item.id === image.id ? { ...item, favorite: !item.favorite } : item);
       localStorage.setItem('galeryPicsum', JSON.stringify(updatedImages));
     };
 
@@ -33,12 +26,12 @@ export function Card({ image }) {
   }
 
   return (
-    <div className="bg-transparent p-2 rounded-lg flex-1 max-h-[300px]">
-      <img src={image.download_url} alt={image.author} className="w-full h-[85%]" />
+    <div className="bg-transparent p-2 rounded-lg flex flex-col items-center max-w-80 max-h-[270px]">
+      <img src={image.download_url} alt={image.author} className="w-[330px] h-[210px]" loading='lazy' decoding="async" />
 
-      <div className="text-right h-[10%] pt-2">
-        <button type="button" className="text-left" onClick={() => toggleFavorite(image)}>
-          {like ? <img src={heartSolid} alt="Favoritada" className='w-7' /> : <img src={heartRegular} alt="Não favoritada" className='w-7' />}
+      <div className="text-center mt-2">
+        <button type="button" onClick={() => toggleFavorite(image)}>
+          {isFavorite ? <img src={heartSolid} alt="Favoritada" className='w-7' /> : <img src={heartRegular} alt="Não favoritada" className='w-7' />}
         </button>
       </div>
     </div>
