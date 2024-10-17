@@ -13,7 +13,7 @@ function App() {
       <div className="w-full h-screen lg:max-w-7xl md:max-w-3xl relative max-h-screen mx:auto p-2">
         <Header />
 
-        <div className='w-full h-full min-h-[85vh] max-h-[85vh] md:max-h-[90vh] overflow-y-auto no-scrollbar'>
+        <div className='w-full h-full min-h-[85vh] max-h-[85vh] md:max-h-[90vh] overflow-y-auto no-scrollbar flex flex-col items-center'>
           <Routes>
             <Route path="/" exact element={<Galery />} />
             <Route path="/galery" element={<Galery />} />
